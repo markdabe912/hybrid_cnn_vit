@@ -34,32 +34,42 @@ class FocalLoss(nn.Module):
             return focal_loss
 
 
+# Function to convert label string to a vector
+def get_label_vector(labels_str, disease_list):
+    labels = labels_str.split('|')
+
+    if labels == ['No Finding']:
+        return [0] * len(disease_list)
+
+    else:
+        return [1 if disease in labels else 0 for disease in disease_list]
+
+
 class ChestXrayDataset(Dataset):
-    def __init__(self, dataframe, image_directory, class_names, transform=None):
-        self.dataframe = dataframe.reset_index(drop=True)
-        self.image_directory = image_directory
+    def __init__(self, dataframe, image_to_folder, disease_list, transform=None):
+        self.dataframe = dataframe
+        self.image_to_folder = image_to_folder
         self.transform = transform
-        self.class_names = [c.lower().replace(" ", "_") for c in class_names]
-        self.class_name_to_index = {name: i for i, name in enumerate(self.class_names)}
+        self.disease_list = disease_list
 
     def __len__(self):
         return len(self.dataframe)
 
-    def __getitem__(self, index):
-        row = self.dataframe.iloc[index]
-        image_path = os.path.join(self.image_directory, row["Image Index"])
-        image = Image.open(image_path).convert("RGB")
+    def __getitem__(self, idx):
+        img_name = self.dataframe.iloc[idx]['Image Index']
+        folder = self.image_to_folder[img_name]
 
-        label_tensor = torch.zeros(len(self.class_names))
-        for label in row["Finding Labels"].split("|"):
-            key = label.strip().lower().replace(" ", "_")
-            if key in self.class_name_to_index:
-                label_tensor[self.class_name_to_index[key]] = 1.0
+        img_path = os.path.join(folder, img_name)
+        image = Image.open(img_path).convert('RGB')
 
         if self.transform:
             image = self.transform(image)
 
-        return image, label_tensor
+        labels_str = self.dataframe.iloc[idx]['Finding Labels']
+        label_vector = get_label_vector(labels_str, self.disease_list)
+        labels = torch.tensor(label_vector, dtype=torch.float)
+
+        return image, labels
 
 
 
@@ -76,15 +86,12 @@ def get_optimal_thresholds(labels, preds):
 
 
 class DenseNetViT(nn.Module):
-    def __init__(self, num_classes=14, freeze_backbone=False, freeze_vit=False, use_custom_proj=False):
+    def __init__(self, num_classes=14, freeze_mode="all", unfreeze_last_vit_layers=3, use_custom_proj=False):
         super().__init__()
         self.use_custom_proj = use_custom_proj
 
         # DenseNet backbone
         self.backbone = timm.create_model("densenet121", pretrained=True, features_only=True)
-        if freeze_backbone:
-            for p in self.backbone.parameters():
-                p.requires_grad = False
 
         # ViT
         # We replace the ViT patch embedding with DenseNet features
@@ -95,9 +102,33 @@ class DenseNetViT(nn.Module):
         self.vit.patch_embed = nn.Identity()
         self.vit.pos_embed = nn.Parameter(self.vit.pos_embed[:, :50, :])
 
-        if freeze_vit:
+        if freeze_mode == "all":
+            for p in self.backbone.parameters():
+                p.requires_grad = False
             for p in self.vit.parameters():
                 p.requires_grad = False
+
+        elif freeze_mode == "none":
+            for p in self.backbone.parameters():
+                p.requires_grad = True
+            for p in self.vit.parameters():
+                p.requires_grad = True
+
+        elif freeze_mode == "partial":
+            # unfreeze DenseNet fully
+            for p in self.backbone.parameters():
+                p.requires_grad = True
+
+            # freeze whole ViT then  unfreeze last N (3 is the default) ViT transformer blocks and final LayerNorm
+            for p in self.vit.parameters():
+                p.requires_grad = False
+            for p in self.vit.blocks[-unfreeze_last_vit_layers:].parameters():
+                p.requires_grad = True
+            for p in self.vit.norm.parameters():
+                p.requires_grad = True
+
+        else:
+            raise ValueError("freeze_mode must be: 'all', 'none', or 'partial'")
 
         # Optional custom projection layer: DenseNet -> Custom Projection -> ViT embedding
         if self.use_custom_proj:
@@ -134,6 +165,7 @@ class DenseNetViT(nn.Module):
         return logits
 
 
+
 def main():
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -144,8 +176,8 @@ def main():
 
     print(f"Device: {device}")
 
-    img_dir = "images"
-    csv_path = "Data_Entry_2017.csv"
+    img_dir = "./nih_data"
+    csv_path = "./nih_data/Data_Entry_2017.csv"
     class_names = [
         "Atelectasis", "Cardiomegaly", "Consolidation", "Edema", "Effusion",
         "Emphysema", "Fibrosis", "Hernia", "Infiltration", "Mass",
@@ -167,7 +199,21 @@ def main():
     ])
 
     df = pd.read_csv(csv_path)
-    df = df[df["Image Index"].apply(lambda x: os.path.exists(os.path.join(img_dir, x)))]
+
+    # Get list of all image folders from images_001 to images_012
+    image_folders = [os.path.join(img_dir, f"images_{str(i).zfill(3)}", "images") for i in range(1, 13)]
+    # Create a dictionary mapping image filenames to their folder paths
+    image_to_folder = {}
+    for folder in image_folders:
+        if os.path.exists(folder):
+            for img_file in os.listdir(folder):
+                if img_file.endswith('.png'):
+                    image_to_folder[img_file] = folder
+
+    # Filter the CSV to include only images that are present in the folders
+    df = df[df['Image Index'].isin(image_to_folder.keys())]
+
+    # df = df[df["Image Index"].apply(lambda x: os.path.exists(os.path.join(img_dir, x)))]
     df["Finding Labels"] = df["Finding Labels"].astype(str)
 
     unique_patient_ids = df['Patient ID'].unique()
@@ -180,15 +226,15 @@ def main():
 
     print(f"Train: {len(train_df)}, Val: {len(val_df)}, Test: {len(test_df)}")
 
-    train_dataset = ChestXrayDataset(train_df, img_dir, class_names, transform=transform_train)
-    val_dataset = ChestXrayDataset(val_df, img_dir, class_names, transform=transform_test)
-    test_dataset = ChestXrayDataset(test_df, img_dir, class_names, transform=transform_test)
+    train_dataset = ChestXrayDataset(train_df, image_to_folder, class_names, transform=transform_train)
+    val_dataset = ChestXrayDataset(val_df, image_to_folder, class_names, transform=transform_test)
+    test_dataset = ChestXrayDataset(test_df, image_to_folder, class_names, transform=transform_test)
 
     train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True, num_workers=2)
     val_loader = DataLoader(val_dataset, batch_size=8, shuffle=False, num_workers=2)
     test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False, num_workers=2)
 
-    model = DenseNetViT(use_custom_proj=False, freeze_backbone=True, freeze_vit=True, num_classes=len(class_names)).to(device)
+    model = DenseNetViT(freeze_mode="partial", unfreeze_last_vit_layers=2, num_classes=len(class_names)).to(device)
     criterion = FocalLoss(alpha=1, gamma=2)
     optimizer = optim.Adam(model.classifier.parameters(), lr=1e-4)
 
