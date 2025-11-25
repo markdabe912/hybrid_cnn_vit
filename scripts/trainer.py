@@ -365,7 +365,7 @@ class ChestXrayHandler:
             "Disease": self.disease_list,
             "F1": f1_scores,
             "AUC": auc_scores
-        }).to_csv(os.path.join(self.args.save_dir, "final_test_per_class.csv"), index=False)
+        }).to_csv(os.path.join(self.args.save_dir, "validation_per_class.csv"), index=False)
 
         if self.args.verbose:
             print(f"Val Loss={val_loss:.4f} | Val Acc={val_acc:.4f} | Macro F1={macro_f1:.4f}")
