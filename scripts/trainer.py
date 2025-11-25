@@ -326,7 +326,7 @@ class ChestXrayHandler:
 
         thresholds = np.array(get_optimal_thresholds(all_labels, all_probs))
 
-        preds_thr = (all_probs > thresholds[None, :]).astype(int)
+        preds_final = (all_probs > thresholds[None, :]).astype(int)
         # f1_scores = [f1_score(all_labels[:, i], preds_thr[:, i])
         #              for i in range(len(self.disease_list))]
         # macro_f1 = np.mean(f1_scores)
