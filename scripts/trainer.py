@@ -332,17 +332,31 @@ class ChestXrayHandler:
         # macro_f1 = np.mean(f1_scores)
 
         f1_scores = []
+        auc_scores = []
+
         for i in range(len(self.disease_list)):
             y_true = all_labels[:, i]
-            y_pred = preds_thr[:, i]
-        
+            y_prob = all_probs[:, i]
+            y_pred = preds_final[:, i]
+
             if len(np.unique(y_true)) < 2:
                 f1_scores.append(np.nan)
+                auc_scores.append(np.nan)
                 continue
+
+            # Compute F1 safely
             try:
-                f1_scores.append(f1_score(y_true, y_pred))
+                f1 = f1_score(y_true, y_pred)
             except ValueError:
-                f1_scores.append(np.nan)
+                f1 = np.nan
+            f1_scores.append(f1)
+
+            # Compute AUC safely
+            try:
+                auc = roc_auc_score(y_true, y_prob)
+            except ValueError:
+                auc = np.nan
+            auc_scores.append(auc)
         
         macro_f1 = np.nanmean(f1_scores)
 
@@ -350,7 +364,8 @@ class ChestXrayHandler:
         pd.DataFrame({
             "Disease": self.disease_list,
             "F1": f1_scores,
-        }).to_csv(os.path.join(self.args.save_dir, "validation_per_class.csv"), index=False)
+            "AUC": auc_scores
+        }).to_csv(os.path.join(self.args.save_dir, "final_test_per_class.csv"), index=False)
 
         if self.args.verbose:
             print(f"Val Loss={val_loss:.4f} | Val Acc={val_acc:.4f} | Macro F1={macro_f1:.4f}")
