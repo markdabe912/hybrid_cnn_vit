@@ -1,0 +1,11 @@
+.idea/*
+__MACOSX/*
+*.tar*
+*.pyc
+*.zip
+*.ipynb_checkpoints
+*.DS_Store
+*cifar-10*
+*.pth
+*.csv
+nih_data/*
