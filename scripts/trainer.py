@@ -88,10 +88,11 @@ class ChestXrayHandler:
         # Determine resume path
         # Case 1: user explicitly disables resume
 
-        auto_resume = os.path.join(self.ckpt_dir, "last_checkpoint.pth")
         if args.test_model and args.resume in ["none", "", "None", None, "auto"]:
-            args.resume = auto_resume if os.path.exists(auto_resume) else None
+            best_resume = os.path.join(self.ckpt_dir, "best_checkpoint.pth")
+            args.resume = best_resume if os.path.exists(best_resume) else None
         elif args.resume == "auto":
+            auto_resume = os.path.join(self.ckpt_dir, "last_checkpoint.pth")
             args.resume = auto_resume if os.path.exists(auto_resume) else None
         elif args.resume in ["none", "", "None"]:
             args.resume = None
