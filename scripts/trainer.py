@@ -98,6 +98,18 @@ class ChestXrayHandler:
             args.resume = None
 
         if args.resume is not None and os.path.exists(args.resume):
+            if not args.test_model:  # load the current training results so it won't overwrite
+                results_dir = os.path.join(PROJECT_ROOT, args.save_dir)
+                df = pd.read_csv(os.path.join(results_dir, "training_results.csv"))
+
+                self.history = {
+                    "epoch": df["epoch"].tolist(),
+                    "train_loss": df["train_loss"].tolist(),
+                    "train_acc": df["train_acc"].tolist(),
+                    "val_loss": df["val_loss"].tolist(),
+                    "val_acc": df["val_acc"].tolist(),
+                    "val_macro_f1": df["val_macro_f1"].tolist(),
+                }
             self.load_checkpoint(args.resume)
             
         # ------------------------------------------------------
