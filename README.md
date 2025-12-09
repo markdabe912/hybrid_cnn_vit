@@ -159,16 +159,42 @@ Simple, clean CLI to run experiments.
 
 ---
 
-## 8 `XX gra.py` — 
+## 8 `XX gradcam.py` — 
 
 ### This script is the interface for users:
 
-### 8.1 xxxx
+### 8.1 Grad-CAM script
+
+
+
+**Purpose:**  
+
+This script generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN. 
+It visualizes the areas of an image that contributed the most to the model's prediction. 
+Also, the script  combines these individual Grad-CAM images into 1 final image with each heatmap in a separate quadrant.
+
+### 1. **Prepare the Files:**
+   - Place the script in the same directory as the model definition `HCV_model.py` and the pre-trained weights file (for example, `best_checkpoint.pth`).
+   - Make sure the image you want to process (for example, `00000001_001.png`) is in the same directory.
+   - Set the image filename in the script by updating the `image_path` variable:
+
+     ```python
+     image_path = "image_name.png"
+     ```
+
+### 2. **Run the Script:**
+   - Execute the script by running:
+
+       ```bash
+       python gradcam.py
+       ```
+
+
 
 ### 8.x location
 - "./visualizations/.py"
 
-**Purpose:**  
+
 
 
 ---
