@@ -2,7 +2,7 @@
 
 This project implements a **modular deep learning system** for multi-label Chest X-ray disease classification using a **DenseNet121 + Vision Transformer (ViT)** hybrid architecture.
 
-The system is cleanly separated into **six scripts**, each responsible for a different stage of the pipeline, ensuring clarity, maintainability, and scalability.
+The system is cleanly separated into **nine scripts**, each responsible for a different stage of the pipeline, ensuring clarity, maintainability, and scalability.
 
 ---
 
