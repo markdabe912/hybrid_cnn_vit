@@ -58,6 +58,7 @@ A loss function effective for:
 
 **Purpose:**  
 Improve detection of underrepresented diseases.
+
 ---
 
 ## 4. `HCV_model.py` — DenseNet + ViT Hybrid Model
@@ -67,13 +68,13 @@ A custom architecture combining:
 - **DenseNet121** for local feature extraction  
 - **Vision Transformer (Vit)** for global pattern reasoning
 
-### 4.2 location
-- "./scripts/HCV_model.py"
-
-Features:
+### 4.2 Features:
 - Freeze/unfreeze backbone and ViT
 - Optional custom projection (DenseNet → ViT embed dim)
 - Outputs logits for 14 diseases
+
+### 4.3 location
+- "./scripts/HCV_model.py"
 
 **Purpose:**  
 Fuse CNN local features with Transformer global context for stronger medical image performance.
@@ -103,52 +104,87 @@ Provide reusable utility functions for the trainer.
 
 ---
 
-## 5. `trainer.py` — Full Training, Validation & Testing Pipeline
+## 6. `trainer.py` — Full Training, Validation & Testing Pipeline
 
 ### This is the core training engine (ChestXrayHander).
 
-### 5.1 Training Loop  
+### 6.1 Training Loop  
 - Computes loss, accuracy  
 - Updates model weights  
 
-### 5.2 Validation Loop  
+### 6.2 Validation Loop  
 - Computes macro F1, optimal thresholds, loss, accuracy 
 - Tracks best model  
 
-### 5.3 Test Evaluation  
+### 6.3 Test Evaluation  
 - Outputs final F1, AUC, accuracy
 
-### 5.4 Checkpoints  
+### 6.4 Checkpoints  
 Saves:
 - best_model.pth
 - last_checkpoint.pth
 
-### 5.5 Resume Training  
+### 6.5 Resume Training  
 Reloads:
 - Model weights  
 - Optimizer & scheduler  
 - Thresholds  
-- Epoch index  
+- Epoch index
+
+### 6.6 location
+- "./scripts/trainer.py"
 
 **Purpose:**  
 Run the entire machine learning workflow end-to-end.
 
 ---
 
-## 6 `main.py` — Command-Line Entry Point
+## 7 `main.py` — Command-Line Entry Point
 
 ### This script is the interface for users:
 
-### 6.1 Parses arguments  
+### 7.1 Parses arguments  
 (e.g., epochs, LR, freezing backbone, paths from yaml file)
 
-### 6.2 Instantiates ChestXrayTrainer
+### 7.2 Instantiates ChestXrayTrainer
 
-### 6.3 Runs the full training pipeline  
+### 7.3 Runs the full training and test pipeline  
 via trainer.run()
+
+### 7.4 location
+- "./scripts/main.py"
 
 **Purpose:**  
 Simple, clean CLI to run experiments.
+
+---
+
+## 8 `XX gra.py` — 
+
+### This script is the interface for users:
+
+### 8.1 xxxx
+
+### 8.x location
+- "./visualizations/.py"
+
+**Purpose:**  
+
+
+---
+
+## 9 `xx.py` —
+
+### This script is the interface for users:
+
+### 9.1 xxx
+(e.g., epochs, LR, freezing backbone, paths from yaml file)
+
+
+### 9.x location
+- "./visualizations/.py"
+
+**Purpose:**  
 
 ---
 
@@ -157,9 +193,14 @@ Simple, clean CLI to run experiments.
 | Scripts        | Functionality                           |
 |-----------------|-------------------------------------------|
 | `dataset.py`    | Dataset loading & label encoding          |
+| `datacombine.py`      |            |
 | `losses.py`       | FocalLoss implementation                 |
 | `HCV_model.py`      | DenseNet + ViT hybrid model              |
 | `utilis.py`      | Utilities: thresholds, accuracy, device, plot  |
 | `trainer.py`    | Training/validation/testing pipeline     |
 | `main.py`      | CLI entry point for training             |
+| `gram.py`      |        xxxx      |
+| `attention.py`      |       xxx       |
+| `features.py`      |        xxxx      |
+
 
