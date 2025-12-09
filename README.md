@@ -1,4 +1,4 @@
-# Chest X-ray Multi-Label Classification — 6-Script Modular Framework
+# Chest X-ray Multi-Label Classification — 9-Script Modular Framework
 
 This project implements a **modular deep learning system** for multi-label Chest X-ray disease classification using a **DenseNet121 + Vision Transformer (ViT)** hybrid architecture.
 
