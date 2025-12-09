@@ -8,10 +8,12 @@ In developing this system, portions of the implementation were adapted from the 
 
 ---
 
-Download the image -- download_dataset.sh
+Before running any part of this project, make sure your environment is properly prepared. Follow the steps below to set up the dataset, install dependencies, and ensure everything is ready for execution.
 
-Install Dependencies -- requirements.txt
-
+1) Download the image -- download_dataset.sh
+Before launching the main pipeline, you must download and prepare the Chest X-ray dataset. 
+3) Install Dependencies -- requirements.txt
+Before running the training, evaluation, or preprocessing scripts, you should install all required Python packages. 
 ---
 
 ## 1. `dataset.py` — Dataset & Label Encoding
