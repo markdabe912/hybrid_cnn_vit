@@ -11,9 +11,9 @@ In developing this system, portions of the implementation were adapted from the 
 Before running any part of this project, make sure your environment is properly prepared. Follow the steps below to set up the dataset, install dependencies, and ensure everything is ready for execution.
 
 1) Download the image -- download_dataset.sh
-Before launching the main pipeline, you must download and prepare the Chest X-ray dataset. 
-3) Install Dependencies -- requirements.txt
-Before running the training, evaluation, or preprocessing scripts, you should install all required Python packages. 
+
+2) Install Dependencies -- requirements.txt
+
 ---
 
 ## 1. `dataset.py` — Dataset & Label Encoding
@@ -26,29 +26,49 @@ Before running the training, evaluation, or preprocessing scripts, you should in
 ### 1.2 get_label_vector()
 - Converts label strings into model-ready label vectors
 
+### 1.3 location 
+- "./data/dataset.py
+
 **Purpose:**  
 Provide clean, preprocessed images and labels for training.
 
 ---
 
-## 2.`losses.py` — Focal Loss for Imbalanced Data
+## 2. `combine_dataset.py` — 
 
-### 2.1 FocalLoss
+### 2.1 
+
+### 2.2 location
+- "./data/combine_dataset.py"
+
+**Purpose:**  
+
+
+---
+
+## 3.`losses.py` — Focal Loss for Imbalanced Data
+
+### 3.1 FocalLoss
 A loss function effective for:
 - Highly imbalanced medical datasets
 - Rare disease classes
 
+### 3.2 location
+- "./scripts/losses.py"
+
 **Purpose:**  
 Improve detection of underrepresented diseases.
-
 ---
 
-## 3. `HCV_model.py` — DenseNet + ViT Hybrid Model
+## 4. `HCV_model.py` — DenseNet + ViT Hybrid Model
 
-### 3.1 DenseNetViT
+### 4.1 DenseNetViT
 A custom architecture combining:
 - **DenseNet121** for local feature extraction  
-- **Vision Transformer (Vit)** for global pattern reasoning  
+- **Vision Transformer (Vit)** for global pattern reasoning
+
+### 4.2 location
+- "./scripts/HCV_model.py"
 
 Features:
 - Freeze/unfreeze backbone and ViT
@@ -60,23 +80,23 @@ Fuse CNN local features with Transformer global context for stronger medical ima
 
 ---
 
-## 4. `utilis.py` — Utility Functions
+## 5. `utilis.py` — Utility Functions
 
 
-### 4.1 load_image_folders()  
-Maps each image file to its containing folder.
+### 5.1 load_image_folders()  
+- Maps each image file to its containing folder.
 
-### 4.2 get_device() 
-Automatically selects GPU → MPS → CPU.
+### 5.2 get_device() 
+- Automatically selects GPU → MPS → CPU.
 
-### 4.3 get_optimal_thresholds() 
-Computes the **best F1 threshold per disease** using precision-recall curves.
+### 5.3 get_optimal_thresholds() 
+- Computes the **best F1 threshold per disease** using precision-recall curves.
 
-### 4.4 multilabel_accuracy() 
-Computes multi-label accuracy cleanly.
+### 5.4 multilabel_accuracy() 
+- Computes multi-label accuracy cleanly.
 
-### 4.5 plot()
-Plot the training, validation and testing results
+### 5.5 location
+- "./scripts/utilis.py"
 
 **Purpose:**  
 Provide reusable utility functions for the trainer.
