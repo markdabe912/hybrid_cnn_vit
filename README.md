@@ -202,7 +202,7 @@ Simple, clean CLI to run experiments.
 
 ---
 
-## 7. Summary Table
+## 11. Summary Table
 
 | Scripts        | Functionality                           |
 |-----------------|-------------------------------------------|
