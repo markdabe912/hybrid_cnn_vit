@@ -178,11 +178,25 @@ Simple, clean CLI to run experiments.
 ### This script is the interface for users:
 
 ### 9.1 xxx
-(e.g., epochs, LR, freezing backbone, paths from yaml file)
+
 
 
 ### 9.x location
 - "./visualizations/.py"
+
+**Purpose:**  
+
+---
+## 10 `features.py` —
+
+### This script is the interface for users:
+
+### 10.1 xxx
+
+
+
+### 10.x location
+- "./features_generation/features.py"
 
 **Purpose:**  
 
