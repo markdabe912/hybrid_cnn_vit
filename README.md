@@ -105,7 +105,7 @@ Provide reusable utility functions for the trainer.
 
 ## 5. `trainer.py` — Full Training, Validation & Testing Pipeline
 
-### This is the core training engine.
+### This is the core training engine (ChestXrayHander).
 
 ### 5.1 Training Loop  
 - Computes loss, accuracy  
