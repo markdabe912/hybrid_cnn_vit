@@ -205,9 +205,9 @@ def plot_cm(model, dl, save_dir_fig, device,normalize='true', test = False, repo
 
 def vit_attn_map(attn_matx, batch_idx = 0):
     # Select which batch item and the first transformer block attention to visualize
-    print("Num blocks:", len(attn_matx))
-    print("Shape block 11:", attn_matx[0].shape)
-    print("batch_idx:", batch_idx)
+    #print("Num blocks:", len(attn_matx))
+    #print("Shape block 0:", attn_matx[0].shape)
+    #print("batch_idx:", batch_idx)
     attn = attn_matx[0][batch_idx]
     
     
