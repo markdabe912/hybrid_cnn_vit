@@ -184,13 +184,9 @@ via trainer.run()
 **Purpose:**  
 Simple, clean CLI to run experiments.
 
----
 
-## 8 `gradcam.py` — 
 
-### This script is the interface for users:
-
-### 8.1 Grad-CAM script
+## 8 Grad-CAM script
 
 
 
@@ -215,11 +211,6 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
        ```bash
        python gradcam.py
        ```
-
-
-
-### 8.x location
-- "./visualizations/gradcam.py"
 
 
 
