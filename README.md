@@ -239,7 +239,7 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
 | `utilis.py`      | Utilities: thresholds, accuracy, device  |
 | `trainer.py`    | Training/validation/testing pipeline     |
 | `main.py`      | CLI entry point for training             |
-| `gradcam.py`      |        generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN   | 
+| `gradcam.py`      | Generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN   | 
 | `attention.py`      |       xxx       |
 | `features.py`      |        xxxx      |
 
