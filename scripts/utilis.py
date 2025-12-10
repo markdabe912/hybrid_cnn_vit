@@ -9,20 +9,7 @@ import pandas as pd
 from PIL import Image
 
 
-# =====================================================
-# DEVICE SETUP
-# =====================================================
-# def get_device():
-#     """Selects CUDA / MPS / CPU properly."""
-#     if torch.cuda.is_available():
-#         print(f"Using CUDA ({torch.cuda.device_count()} GPUs)")
-#         return torch.device("cuda")
-#     elif torch.backends.mps.is_available():
-#         print("Using Apple MPS")
-#         return torch.device("mps")
-#     else:
-#         print("Using CPU")
-#         return torch.device("cpu")
+
 
 def get_device(requested_device="auto"):
     """
@@ -132,75 +119,6 @@ def multilabel_accuracy(y_true, y_pred):
     total = y_true.size
     return correct / total
     
-
-
-#### later use for plot
-
-def plot_curves(train_loss_history, train_acc_history,
-                valid_loss_history, valid_acc_history,
-                save_dir_fig):
-
-    # Ensure directory exists
-    os.makedirs(save_dir_fig, exist_ok=True)
-
-    # ----------------------------
-    # 1. LOSS CURVE
-    # ----------------------------
-    fig1, ax1 = plt.subplots()
-    ax1.set_title('Loss Curve')
-    ax1.set_xlabel('Epochs')
-    ax1.set_ylabel('Loss')
-    ax1.plot(train_loss_history, color='blue', label='Train Loss')
-    ax1.plot(valid_loss_history, color='red', label='Val Loss')
-    ax1.legend(loc='upper right')
-    ax1.xaxis.set_major_locator(MultipleLocator(1))   # better than 0.5
-    fig1.tight_layout()
-    fig1.savefig(os.path.join(save_dir_fig, "loss_plot.png"))
-
-    # ----------------------------
-    # 2. ACCURACY CURVE
-    # ----------------------------
-    fig2, ax2 = plt.subplots()
-    ax2.set_title('Accuracy Curve')
-    ax2.set_xlabel('Epochs')
-    ax2.set_ylabel('Accuracy')
-    ax2.plot(train_acc_history, color='blue', label='Train Acc')
-    ax2.plot(valid_acc_history, color='red', label='Val Acc')
-    ax2.legend(loc='upper right')
-    ax2.xaxis.set_major_locator(MultipleLocator(1))
-    fig2.tight_layout()
-    fig2.savefig(os.path.join(save_dir_fig, "accuracy_plot.png"))
-
-    plt.show()
-
-
-
-
-#confusion matrix function
-def plot_cm(model, dl, save_dir_fig, device,normalize='true', test = False, report = False):
-    #plot the confusion matrix
-    categories = class_names
-    model.eval()
-    y_pred = []
-    y_true = []
-    for x, y in dl:
-        x = x.to(device)
-        y = y.to(device)
-        output = model(x) #out shape: (batch_size, 5)
-        y_pred.extend(torch.argmax(output, dim=1).cpu().numpy())
-        y_true.extend(y.cpu().numpy())
-    cm = confusion_matrix(y_true, y_pred, normalize=normalize)
-    sns.heatmap(cm, annot=True, fmt= '.2f', cmap='Blues', xticklabels=categories.values(), yticklabels=categories.values())
-    plt.xlabel('Predicted')
-    plt.ylabel('True')
-    if test:
-        plt.savefig(os.path.join(save_dir_fig, "confusion_matrix_test.png"))
-    else:
-        plt.savefig(os.path.join(save_dir_fig, "confusion_matrix_val.png"))
-    plt.show()
-    if report:
-        print(classification_report(y_true, y_pred, target_names=class_names.values()))
-
 
 
 def vit_attn_map(attn_matx, batch_idx = 0):
