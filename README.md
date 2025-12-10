@@ -16,6 +16,8 @@ Before running any part of this project, make sure your environment is properly 
 
 3) Install Dependencies -- requirements.txt
 
+4) Install opencv and Pillow -- Please install opencv and Pillow versions compatible with numpy 1.26.4. after running the requirements.txt. Note these are not included in the requirement.txt file because of installation issues encountered. Please install separately before running any scripts and be aware of opencv silently upgrading numpy from 1.26.4 to numpy 2+. if you install a newer version of opencv.
+
 ---
 
 ## 1. `dataset.py` — Dataset & Label Encoding
@@ -226,9 +228,10 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
 
 ## 9 `generate_attnmaps.py` —
 **Purpose:**  
-This script loads a model from a checkpoint, default is the best checkpoint and runs the generate_vit_map function in trainer.py to generate and save attention map plots for an input image.
+This script loads a model from a checkpoint, default is the best checkpoint and runs the generate_vit_map function in trainer.py to generate and save attention map plots for an input image. 
 
 ### 1. **Run the Script:**
+   - requires installation of opencv and Pillow versions compatible with numpy 1.26.4. Note these are not included in the requirement file because of installation issues encountered. Please install separately before running and be aware of opencv silently upgrading numpy from 1.26.4 to numpy 2+.
    - update checkpoint path in the file if you want to use another model different from the best model
    - update test_image with the file name of the image you want to generate attention map for e.g "00000008_002.png"
    - update path to where to save the generated attention map plot. Default is the results folder that is on the same        level as the scripts folder
