@@ -16,7 +16,7 @@ Before running any part of this project, make sure your environment is properly 
 
 3) Install Dependencies -- requirements.txt
 
-4) Install opencv and Pillow -- Please install opencv and Pillow versions compatible with numpy 1.26.4. after running the requirements.txt. Note these are not included in the requirement.txt file because of installation issues encountered. Please install separately before running any scripts and be aware of opencv silently upgrading numpy from 1.26.4 to numpy 2+. if you install a newer version of opencv.
+4) Install opencv and Pillow -- Please install opencv-python(to import cv2) and Pillow versions compatible with numpy 1.26.4. after running the requirements.txt. Note these are not included in the requirement.txt file because of installation issues encountered. Please install separately before running any scripts and be aware of opencv silently upgrading numpy from 1.26.4 to numpy 2+. if you install a newer version of opencv.
 
 ---
 
