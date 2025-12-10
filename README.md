@@ -159,7 +159,7 @@ Simple, clean CLI to run experiments.
 
 ---
 
-## 8 `XX gradcam.py` — 
+## 8 `gradcam.py` — 
 
 ### This script is the interface for users:
 
@@ -192,7 +192,7 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
 
 
 ### 8.x location
-- "./visualizations/.py"
+- "./visualizations/gradcam.py"
 
 
 
@@ -236,10 +236,10 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
 | `datacombine.py`      |            |
 | `losses.py`       | FocalLoss implementation                 |
 | `HCV_model.py`      | DenseNet + ViT hybrid model              |
-| `utilis.py`      | Utilities: thresholds, accuracy, device, plot  |
+| `utilis.py`      | Utilities: thresholds, accuracy, device  |
 | `trainer.py`    | Training/validation/testing pipeline     |
 | `main.py`      | CLI entry point for training             |
-| `gram.py`      |        xxxx      |
+| `gradcam.py`      |        generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN   | 
 | `attention.py`      |       xxx       |
 | `features.py`      |        xxxx      |
 
