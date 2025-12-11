@@ -12,7 +12,7 @@ In developing this system, portions of the implementation were adapted from the 
 
 - We provide two separate training pipelines: one for the NIH-only dataset and one for the combined NIH + CheXpert dataset. Because the combined dataset produces significantly better performance—showing higher F1 and AUC scores—we recommend using the **combined-data training scripts**, which are saved in the **Combined Data Code** folder, as the default configuration. The scripts in this folder support generation of attention maps and Grad-CAM while the scripts in the NIH folder do not.
  
-- Internal users can run the model either through **Linux command-line arguments** or interactively in a **Jupyter Notebook**. To interactively train your model (using the combined dataset),run inference and generate attention maps for a selected image, navigate to the **Combine_Data_Code** folder and open the **train.ipynb** notebook and run the block of codes there. Jupyter notebook currently  display training run, inference run, model results, and attention map based on the most recent run. Please make sure that you have install opencv-python and Pillow versions compatible with numpy 1.26.4 after running the requirements.txt file. Beware of opencv-python silently upgrading your installed numpy to version 2. Alternatively, you may run the Python training script directly via:
+- Internal users can run the model either through **Linux command-line arguments** or interactively in a **Jupyter Notebook**. To interactively train your model (using the combined dataset),run inference and generate attention maps for a selected image, navigate to the **Combine_Data_Code** folder and open the **train.ipynb** notebook and run the block of codes there. Jupyter notebook currently  display training run, inference run, model results, and attention map based on the most recent run. Please make sure that you install opencv-python and Pillow versions compatible with numpy 1.26.4 just as the commented block of code after the requirements.txt code block instructs before running the next block of code . Beware of opencv-python silently upgrading your installed numpy to version 2. Also make sure that you have downloaded the two datasets and run CS7643projectcomn-final.ipynb to generate the csv file before running the train.ipynb file.  Alternatively, you may run the Python training script directly via:
  ```bash
        python train.py --batch_size 16 --lr 1e-4
 ```
@@ -52,8 +52,8 @@ Provide clean, preprocessed images and labels for training.
 ### 2.1 
 - Assumes both datasets have been downloaded into folders created by the download_dataset and download_dataset2 scripts
 - datasets folder should be in the same directory as this jupyter notebook
-- script combines the NIH and Chexpert datasets into a unified dataframe and saves the dataframe as a csv file **nih_chexcomb_df_final.csv** to your local directory 
-- generates and saves disease prevalence plots **NIH Imbalance Plot** and **NIH_Chex Imbalance Plot** to your local directory
+- script combines the NIH and Chexpert datasets into a unified dataframe and saves the dataframe as a csv file **nih_chexcomb_df_final.csv** to your current directory 
+- generates and saves disease prevalence plots **NIH Imbalance Plot** and **NIH_Chex Imbalance Plot** to your current directory
 ### 2.2 location
 - "./CS7643projectcomb-final.ipynb"
 
@@ -88,14 +88,14 @@ A custom architecture combining:
 - Freeze/unfreeze backbone and ViT
 - Optional custom projection (DenseNet → ViT embed dim)
 - Outputs logits for 14 diseases
-- **version in the combined dataset folder contains code to register hook to capture the attention weights during the forward pass**
+- version in the  Combine_Data_Code folder contains code to register hook to capture the attention weights during the forward pass
 
 ### 4.3 location
 - "./Combine_Data_Code/HCV_model.py" 
 
 **Purpose:**  
 Fuse CNN local features with Transformer global context for stronger medical image performance.
-**Combined dataset version: In addition, register hook to capture attention weights during the forward pass**
+Combine_Data_Code version: Also register hook to capture attention weights during the forward pass
 
 ---
 
@@ -118,7 +118,7 @@ Fuse CNN local features with Transformer global context for stronger medical ima
 - Create the attention map for visualization.
 
 ### 5.6 plot_attn_map() 
-- Plots a pair of images, the original image and an overlay of the created attention map on the original map and save plot to your local directory.
+- Plots a pair of images, the original image and an overlay of the created attention map on the original map and save plot to your current directory.
   
 ### 5.7 create_dataset_dict() 
 - create image_to_folder dictionary for combined dataset
@@ -138,7 +138,7 @@ Provide reusable utility functions for the trainer.
 ### 6.1 Training Loop  
 - Computes loss, accuracy  
 - Updates model weights
-- **version in combined dataset fire the hook to capture attention weight** 
+- version in Combine_Data_Code fire the hook to capture attention weight
 
 ### 6.2 Validation Loop  
 - Computes macro F1, optimal thresholds, loss, accuracy 
@@ -225,10 +225,10 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
 
 
 ### 9.1. Run the Script
-   - requires installation of opencv and Pillow versions compatible with numpy 1.26.4. Note these are not included in the requirement file because of installation issues encountered. Please install separately before running and be aware of opencv silently upgrading numpy from 1.26.4 to numpy 2+.
+   - requires installation of opencv and Pillow versions compatible with numpy 1.26.4. Note these are not included in the requirement.txt file because of installation issues encountered. Please install separately before running and be aware of opencv-python silently upgrading numpy 1.26.4 to numpy 2+.
    - update checkpoint path in the file if you want to use another model different from the best model
    - update test_image with the file name of the image you want to generate attention map for e.g "00000008_002.png"
-   - update path to where to save the generated attention map plot. Default is the results folder that is on the same        level as the scripts folder
+   - update path to where to save the generated attention map plot. Default is the results folder.
 
 ### 9.2 location
 - "./Combine_Data_Code/generate_attnmaps.py" 
