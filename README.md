@@ -10,9 +10,9 @@ In developing this system, portions of the implementation were adapted from the 
 
 ### Instructions for Running the Code
 
-- We provide two separate training pipelines: one for the NIH-only dataset and one for the combined NIH + CheXpert dataset. Because the combined dataset produces significantly better performance—showing higher F1 and AUC scores—we recommend using the **combined-data training scripts**, which are saved in the **Combined Data Code** folder, as the default configuration.
+- We provide two separate training pipelines: one for the NIH-only dataset and one for the combined NIH + CheXpert dataset. Because the combined dataset produces significantly better performance—showing higher F1 and AUC scores—we recommend using the **combined-data training scripts**, which are saved in the **Combined Data Code** folder, as the default configuration. The scripts in this folder support generation of attention maps and Grad-CAM while the scripts in the NIH folder do not.
  
-- Internal users can run the model either through **Linux command-line arguments** or interactively in a **Jupyter Notebook**. For example, you can navigate to the **Combine_Data_Code** folder and open the **train.ipynb** notebook to view sample training runs, intermediate outputs, and visualization results. Alternatively, you may run the Python training script directly via:
+- Internal users can run the model either through **Linux command-line arguments** or interactively in a **Jupyter Notebook**. To interactively train your model (using the combined dataset),run inference and generate attention maps for a selected image, navigate to the **Combine_Data_Code** folder and open the **train.ipynb** notebook and run the block of codes there. Jupyter notebook currently  display training run, inference run, model results, and attention map based on the most recent run. Please make sure that you have install opencv-python and Pillow versions compatible with numpy 1.26.4 after running the requirements.txt file. Beware of opencv-python silently upgrading your installed numpy to version 2. Alternatively, you may run the Python training script directly via:
  ```bash
        python train.py --batch_size 16 --lr 1e-4
 ```
