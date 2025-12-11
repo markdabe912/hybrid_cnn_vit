@@ -40,7 +40,7 @@ In developing this system, portions of the implementation were adapted from the 
 - Converts label strings into model-ready label vectors
 
 ### 1.3 location 
-- "./data/dataset.py
+- "./Combine_Data_Code/dataset.py"
 
 **Purpose:**  
 Provide clean, preprocessed images and labels for training.
@@ -55,7 +55,7 @@ Provide clean, preprocessed images and labels for training.
 - script combines the NIH and Chexpert datasets into a unified dataframe and saves the dataframe as a csv file **nih_chexcomb_df_final.csv** to your local directory 
 - generates and saves disease prevalence plots **NIH Imbalance Plot** and **NIH_Chex Imbalance Plot** to your local directory
 ### 2.2 location
-- "./data/combine_dataset.py"??
+- "./CS7643projectcomb-final.ipynb"
 
 **Purpose:**  
 Create a unified combined dataset csv file for training. Generate disease prevalence plots for report. User needs to update csv_path argument in config_HCV.yaml file to **nih_chexcomb_df_final.csv** file path if training combined dataset
@@ -70,7 +70,7 @@ A loss function effective for:
 - Rare disease classes
 
 ### 3.2 location
-- "./scripts/losses.py"
+- "./Combine_Data_Code/losses.py"
 
 **Purpose:**  
 Improve detection of underrepresented diseases.
@@ -91,8 +91,7 @@ A custom architecture combining:
 - **version in the combined dataset folder contains code to register hook to capture the attention weights during the forward pass**
 
 ### 4.3 location
-- "./scripts/HCV_model.py"
-- "./scripts/HCV_model.py" **need to update this location for version in combined dataset folder**
+- "./Combine_Data_Code/HCV_model.py" 
 
 **Purpose:**  
 Fuse CNN local features with Transformer global context for stronger medical image performance.
@@ -114,18 +113,18 @@ Fuse CNN local features with Transformer global context for stronger medical ima
 
 ### 5.4 multilabel_accuracy() 
 - Computes multi-label accuracy cleanly.
-**Added by Titi**
+
 ### 5.5 vtt_attn_map() 
 - Create the attention map for visualization.
 
 ### 5.6 plot_attn_map() 
 - Plots a pair of images, the original image and an overlay of the created attention map on the original map and save plot to your local directory.
-
+  
 ### 5.7 create_dataset_dict() 
 - create image_to_folder dictionary for combined dataset
 
 ### 5.8 location
-- "./scripts/utilis.py"
+- "./Combine_Data_Code/utilis.py"
 
 **Purpose:**  
 Provide reusable utility functions for the trainer.
@@ -167,8 +166,7 @@ Reloads:
 - Run plot_attn_map to generate and save visualization
 
 ### 6.7 location
-- "./scripts/trainer.py"
-- "./scripts/trainer.py" **need to update location for version in combined dataset**
+- "./Combine_Data_Code/trainer.py" 
 
 **Purpose:**  
 Run the entire machine learning workflow end-to-end.
@@ -188,24 +186,16 @@ Run the entire machine learning workflow end-to-end.
 via trainer.run()
 
 ### 7.4 location
-- "./scripts/main.py"
+- "./Combine_Data_Code/main.py"
 
 **Purpose:**  
 Simple, clean CLI to run experiments.
 
 
 
-## 8 Grad-CAM script
+## 8 gradcam.py - Generates Grad-CAM images
 
-
-
-**Purpose:**  
-
-This script generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN. 
-It visualizes the areas of an image that contributed the most to the model's prediction. 
-Also, the script  combines these individual Grad-CAM images into 1 final image with each heatmap in a separate quadrant.
-
-### 1. **Prepare the Files:**
+### 8.1. Prepare the Files
    - Place the script in the same directory as the model definition `HCV_model.py` and the pre-trained weights file (for example, `best_checkpoint.pth`).
    - Make sure the image you want to process (for example, `00000001_001.png`) is in the same directory.
    - Set the image filename in the script by updating the `image_path` variable:
@@ -213,44 +203,38 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
      ```python
      image_path = "image_name.png"
      ```
-
-### 2. **Run the Script:**
+### 8.2. Run the Script
    - Execute the script by running:
 
        ```bash
        python gradcam.py
        ```
-
-
+### 8.3 location
+- "./Combine_Data_Code/gradcam.py"
+        
+**Purpose:**  
+This script generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN. 
+It visualizes the areas of an image that contributed the most to the model's prediction. 
+Also, the script  combines these individual Grad-CAM images into 1 final image with each heatmap in a separate quadrant.
 
 
 ---
 
 ## 9 `generate_attnmaps.py` —
-**Purpose:**  
-This script loads a model from a checkpoint, default is the best checkpoint and runs the generate_vit_map function in trainer.py to generate and save attention map plots for an input image. 
 
-### 1. **Run the Script:**
+
+### 9.1. Run the Script
    - requires installation of opencv and Pillow versions compatible with numpy 1.26.4. Note these are not included in the requirement file because of installation issues encountered. Please install separately before running and be aware of opencv silently upgrading numpy from 1.26.4 to numpy 2+.
    - update checkpoint path in the file if you want to use another model different from the best model
    - update test_image with the file name of the image you want to generate attention map for e.g "00000008_002.png"
    - update path to where to save the generated attention map plot. Default is the results folder that is on the same        level as the scripts folder
 
-### 9.x location
-- "./visualizations/generate_attnmaps.py" **need to update after cleanup**
+### 9.2 location
+- "./Combine_Data_Code/generate_attnmaps.py" 
 
-### This script is the interface for users:
-
-### 9.1 xxx
-
-
-
-### 9.x location
-- "./visualizations/.py"
 
 **Purpose:**  
-
----
+This script loads a model from a checkpoint, default is the best checkpoint and runs the generate_vit_map function in trainer.py to generate and save attention map plots for an input image. 
 
 
 ## 10. Summary Table
@@ -258,14 +242,14 @@ This script loads a model from a checkpoint, default is the best checkpoint and 
 | Scripts        | Functionality                           |
 |-----------------|-------------------------------------------|
 | `dataset.py`    | Dataset loading & label encoding          |
-| `CS7643projectcomb-final.ipynb`      |            |
+| `CS7643projectcomb-final.ipynb`      |    Combined dataset        |
 | `losses.py`       | FocalLoss implementation                 |
 | `HCV_model.py`      | DenseNet + ViT hybrid model              |
 | `utilis.py`      | Utilities: thresholds, accuracy, device  |
 | `trainer.py`    | Training/validation/testing pipeline     |
 | `main.py`      | CLI entry point for training             |
 | `gradcam.py`      | Generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN   | 
-| `attention.py`      |       xxx       |
+| `generate_attnmaps.py`      |       Generate and save attention map plots for an input image       |
 
 
 
