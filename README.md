@@ -193,7 +193,8 @@ Simple, clean CLI to run experiments.
 
 
 
-## 8 gradcam.py - Generates Grad-CAM images
+## 8. `gradcam.py` - Generates Grad-CAM images
+
 
 ### 8.1. Prepare the Files
    - Place the script in the same directory as the model definition `HCV_model.py` and the pre-trained weights file (for example, `best_checkpoint.pth`).
@@ -220,7 +221,7 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
 
 ---
 
-## 9 `generate_attnmaps.py` —
+## 9 `generate_attnmaps.py` — generate and save attention map plots for an input image
 
 
 ### 9.1. Run the Script
