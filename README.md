@@ -242,27 +242,14 @@ This script loads a model from a checkpoint, default is the best checkpoint and 
 **Purpose:**  
 
 ---
-## 10 `features.py` —
-
-### This script is the interface for users:
-
-### 10.1 xxx
 
 
-
-### 10.x location
-- "./features_generation/features.py"
-
-**Purpose:**  
-
----
-
-## 11. Summary Table
+## 10. Summary Table
 
 | Scripts        | Functionality                           |
 |-----------------|-------------------------------------------|
 | `dataset.py`    | Dataset loading & label encoding          |
-| `datacombine.py`      |            |
+| `CS7643projectcomb-final.ipynb`      |            |
 | `losses.py`       | FocalLoss implementation                 |
 | `HCV_model.py`      | DenseNet + ViT hybrid model              |
 | `utilis.py`      | Utilities: thresholds, accuracy, device  |
@@ -270,6 +257,6 @@ This script loads a model from a checkpoint, default is the best checkpoint and 
 | `main.py`      | CLI entry point for training             |
 | `gradcam.py`      | Generates Grad-CAM images for the 4 dense blocks of a DenseNet backbone CNN   | 
 | `attention.py`      |       xxx       |
-| `features.py`      |        xxxx      |
+
 
 
