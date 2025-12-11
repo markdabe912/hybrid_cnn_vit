@@ -8,13 +8,13 @@ In developing this system, portions of the implementation were adapted from the 
 
 ---
 
-### Summary
-- We trained our hybrid DenseNet–ViT model using two separate training scripts: one for the NIH-only dataset(NIH_Data_Code) and one for the combined NIH + CheXpert dataset(Combined_Data_Code).
-- Because the transformer component of our model requires significantly more data, the combined dataset achieved much stronger performance—with an average F1 increase of more than 12% and a substantial improvement in AUC.
-- As a result, the NIH + CheXpert training script produces the best-performing model, and we recommend running this version(Combined_Data_Code) for inference or further experiments.
-
 ### Instructions for Running the Code
-Before running any part of this project, make sure your environment is properly prepared. Follow the steps below to set up the dataset, install dependencies, and ensure everything is ready for execution.
+
+- We provide two separate training pipelines: one for the NIH-only dataset and one for the combined NIH + CheXpert dataset. Because the combined dataset produces significantly better performance—showing higher F1 and AUC scores—we recommend using the combined training script(Combine_Data_Code) as the default configuration.
+ 
+- Internal users can run the model either through Linux command-line arguments or interactively in a Jupyter Notebook. For example, you can navigate to the "Combine_Data_Code" folder and open the train.ipynb notebook to view sample training runs, intermediate outputs, and visualization results. Alternatively, you may run the Python training script directly via: python train.py --batch_size 16 --lr 1e-4
+
+- Before running any part of this project, make sure your environment is properly prepared. Follow the steps below to set up the dataset, install dependencies, and ensure everything is ready for execution.
 
 1) Download the NIH images -- download_dataset.sh
 
