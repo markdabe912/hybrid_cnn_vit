@@ -10,7 +10,7 @@ In developing this system, portions of the implementation were adapted from the 
 
 ### Instructions for Running the Code
 
-- We provide two separate training pipelines: one for the NIH-only dataset and one for the combined NIH + CheXpert dataset. Because the combined dataset produces significantly better performance—showing higher F1 and AUC scores—we recommend using the combined data training scripts as the default configuration.
+- We provide two separate training pipelines: one for the NIH-only dataset and one for the combined NIH + CheXpert dataset. Because the combined dataset produces significantly better performance—showing higher F1 and AUC scores—we recommend using the **combined-data training scripts**, which are saved in the **Combined Data Code** folder, as the default configuration.
  
 - Internal users can run the model either through **Linux command-line arguments** or interactively in a **Jupyter Notebook**. For example, you can navigate to the **Combine_Data_Code** folder and open the **train.ipynb** notebook to view sample training runs, intermediate outputs, and visualization results. Alternatively, you may run the Python training script directly via:
  ```bash
