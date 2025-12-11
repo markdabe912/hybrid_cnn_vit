@@ -221,7 +221,7 @@ Also, the script  combines these individual Grad-CAM images into 1 final image w
 
 ---
 
-## 9 `generate_attnmaps.py` — generate and save attention map plots for an input image
+## 9 `generate_attnmaps.py` — Generate and save attention map plots for an input image
 
 
 ### 9.1. Run the Script
